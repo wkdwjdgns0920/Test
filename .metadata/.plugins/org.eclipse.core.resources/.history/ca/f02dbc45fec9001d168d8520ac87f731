@@ -1,0 +1,163 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+	static List<Article> articles = new ArrayList<>();
+
+	static int lastArticleId = 3;
+
+	public static void main(String[] args) {
+
+		System.out.println("==프로그램 시작==");
+
+		Scanner sc = new Scanner(System.in);
+
+		while (true) {
+			System.out.print("명령어>");
+			String command = sc.nextLine().trim();
+
+			if (command.length() == 0) {
+				System.out.println("명령어를 입력해주세요");
+			}
+
+			if (command.equals("exit")) {
+				break;
+			}
+
+			if (command.equals("article write")) {
+				int id = lastArticleId + 1;
+				System.out.println("제목 : ");
+				String title = sc.nextLine();
+				System.out.println("내용 : ");
+				String body = sc.nextLine();
+				Article article = new Article(id, title, body);
+				articles.add(article);
+
+				System.out.printf("%d번 게시글이 작성되었습니다", id);
+				lastArticleId++;
+			} else if (command.equals("article list")) {
+				if (articles.size() == 0) {
+					System.out.println("게시글이 존제하지 않습니다");
+					continue;
+				}
+
+				System.err.println("번호  //  제목  //  조회  //  작성자");
+
+				for (int i = articles.size() - 1; i >= 0; i--) {
+					Article article = articles.get(i);
+
+					System.out.printf("%d  //  %s\n", article.id, article.title);
+				}
+
+			} else if (command.equals("article detail")) {
+				String[] cmdDiv = command.split(" ");
+
+				if (cmdDiv.length < 3) {
+					System.out.println("명령어를 다시 입력해주세요");
+					continue;
+				}
+
+				int id = Integer.parseInt(cmdDiv[2]);
+
+				Article foundArticle = getArticle(id);
+
+				if (foundArticle == null) {
+					System.out.println("존재하지 않는 게시글입니다");
+					continue;
+				}
+
+				System.out.printf("번호 : %d\n", foundArticle.id);
+				System.out.printf("제목 : %s\n", foundArticle.title);
+				System.out.printf("내용 : %s\n", foundArticle.body);
+			} else if (command.equals("article modify")) {
+				String[] cmdDiv = command.split(" ");
+
+				if (cmdDiv.length < 3) {
+					System.out.println("명령어를 다시 입력해주세요");
+					continue;
+				}
+
+				int id = Integer.parseInt(cmdDiv[2]);
+
+				Article foundArticle = getArticle(id);
+
+				if (foundArticle == null) {
+					System.out.println("존재하지 않는 게시글입니다");
+					continue;
+				}
+
+				System.out.println("새 제목 : ");
+				String newTitle = sc.nextLine();
+				System.out.println("새 내용 : ");
+				String newBody = sc.nextLine();
+
+				foundArticle.title = newTitle;
+				foundArticle.body = newBody;
+
+				System.out.printf("%d번 게시글을 수정하였습니다", foundArticle.id);
+
+			} else if (command.equals("article modify")) {
+				String[] cmdDiv = command.split(" ");
+
+				if (cmdDiv.length < 3) {
+					System.out.println("명령어를 다시 입력해주세요");
+					continue;
+				}
+
+				int id = Integer.parseInt(cmdDiv[2]);
+
+				Article foundArticle = getArticle(id);
+
+				if (foundArticle == null) {
+					System.out.println("존재하지 않는 게시글입니다");
+					continue;
+				}
+
+				System.out.println("새 제목 : ");
+				String newTitle = sc.nextLine();
+				System.out.println("새 내용 : ");
+				String newBody = sc.nextLine();
+
+				foundArticle.title = newTitle;
+				foundArticle.body = newBody;
+
+				System.out.printf("%d번 게시글을 수정하였습니다", foundArticle.id);
+			}
+
+		}
+
+	}
+
+	private static Article getArticle(int id) {
+		int index = getArticleIndex(id);
+		if (index == -1) {
+			return null;
+		}
+		return articles.get(index);
+	}
+
+	private static int getArticleIndex(int id) {
+		int i = 0;
+		for (Article article : articles) {
+			if (article.id == id) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+
+}
+
+class Article {
+	int id;
+	String title;
+	String body;
+
+	Article(int id, String title, String body) {
+		this.id = id;
+		this.title = title;
+		this.body = body;
+	}
+}

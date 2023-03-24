@@ -1,0 +1,16 @@
+import java.time.LocalDatenow;
+import java.time.format.DateTimeFormatter;
+
+public class Util {
+
+	public static String getDateTimeNowstr() {
+		 // 현재 날짜 구하기
+		LocalDatenow now = LocalDate.now();
+ 
+        // 포맷 정의
+        String formatter = now.formatted(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+ 
+ 
+	}
+	
+}
